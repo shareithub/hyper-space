@@ -10,3 +10,6 @@ source /root/.bashrc
 FEATURE :
 - EASY USE
 - AUTO DOWNLAOD, RETRY DOWNLOAD, RETRY COMMAND AFTER ERROR
+
+
+TUTORIAL BY VIDEO : https://youtu.be/hUnQtFR74_c
