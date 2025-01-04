@@ -83,7 +83,7 @@ echo "Inferensi selesai dan berhasil dijalankan!"
 echo "Menjalankan login dan select-tier..."
 aios-cli hive login
 aios-cli hive select-tier 5
-
+aios-cli hive connect
 # Menghentikan proses 'aios-cli start' dan menjalankan perintah 'aios-cli kill'
 echo "Menghentikan proses 'aios-cli start' dengan 'aios-cli kill'..."
 aios-cli kill
@@ -92,6 +92,6 @@ aios-cli kill
 echo "Masuk kembali ke screen '$screen_name' untuk menjalankan aios-cli start --connect..."
 
 # Menggunakan screen -r untuk merujuk ke sesi yang sudah ada
-screen -S "$screen_name" -X stuff "echo 'Menunggu 5 detik sebelum menjalankan perintah...'; sleep 5; echo 'Menjalankan perintah aios-cli start'; aios-cli start --connect; echo 'Perintah selesai dijalankan.'; sleep 5\n"
+screen -S "$screen_name" -X stuff "echo 'Menunggu 5 detik sebelum menjalankan perintah...'; aios-cli start --connect\n"
 
 echo "Proses selesai. aios-cli start --connect telah dijalankan di dalam screen dan sistem telah kembali ke latar belakang."
