@@ -79,27 +79,6 @@ done
 
 echo "Inferensi selesai dan berhasil dijalankan!"
 
-# Melakukan login dan memilih tier
-echo "Menunggu 10 detik sebelum menjalankan perintah 'aios-cli hive login'..."
-sleep 10
-echo "Menjalankan perintah 'aios-cli hive login'..."
-
-# Mengulang jika terjadi kesalahan saat login
-until aios-cli hive login; do
-    echo "Terjadi kesalahan saat login. Mengulang..."
-    sleep 10
-done
-
-echo "Menunggu 10 detik sebelum menjalankan perintah 'aios-cli hive select-tier 5'..."
-sleep 10
-echo "Menjalankan perintah 'aios-cli hive select-tier 5'..."
-
-# Mengulang jika terjadi kesalahan saat memilih tier
-until aios-cli hive select-tier 5; do
-    echo "Terjadi kesalahan saat memilih tier. Mengulang..."
-    sleep 10
-done
-
 # Keluar dari sesi screen 'prompt-hyperspace' dan kembali ke hyperspace
 echo "Keluar dari sesi screen 'prompt-hyperspace'..."
 screen -S prompt-hyperspace -X detach
