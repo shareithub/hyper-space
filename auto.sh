@@ -100,30 +100,6 @@ until aios-cli hive select-tier 5; do
     sleep 10
 done
 
-# Menghubungkan ke hive
-echo "Menunggu 10 detik sebelum menjalankan perintah 'aios-cli hive connect'..."
-sleep 10
-echo "Menjalankan perintah 'aios-cli hive connect'..."
-
-# Mengulang jika terjadi kesalahan saat menghubungkan ke hive
-until aios-cli hive connect; do
-    echo "Terjadi kesalahan saat menghubungkan ke hive. Mengulang..."
-    sleep 10
-done
-
-# Menjalankan inferensi setelah menghubungkan ke hive
-echo "Menjalankan inferensi setelah menghubungkan ke hive..."
-while true; do
-    aios-cli hive infer --model hf:TheBloke/phi-2-GGUF:phi-2.Q4_K_M.gguf --prompt "Hello, can you explain about the YouTube channel Share It Hub?"
-    if [ $? -eq 0 ]; then
-        echo "Inferensi selesai dan berhasil dijalankan!"
-        break
-    else
-        echo "Terjadi kesalahan saat menjalankan inferensi. Mencoba lagi..."
-        sleep 5
-    fi
-done
-
 # Keluar dari sesi screen 'prompt-hyperspace' dan kembali ke hyperspace
 echo "Keluar dari sesi screen 'prompt-hyperspace'..."
 screen -S prompt-hyperspace -X detach
