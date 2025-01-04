@@ -96,14 +96,18 @@ screen -r hyperspace
 echo "Menunggu 10 detik sebelum menjalankan perintah 'aios-cli start --connect'..."
 sleep 10
 
-# Menjalankan perintah 'aios-cli start --connect'
-echo "Menjalankan perintah 'aios-cli start --connect'..."
-
-# Mengulang jika terjadi kesalahan saat menjalankan start --connect
-until aios-cli start --connect; do
-    echo "Terjadi kesalahan saat menjalankan 'aios-cli start --connect'. Mengulang..."
-    sleep 10
-done
+# Mengecek apakah 'aios-cli start --connect' sudah berjalan
+echo "Mengecek apakah 'aios-cli start --connect' sudah berjalan..."
+if pgrep -f "aios-cli start --connect" > /dev/null; then
+    echo "Instance 'aios-cli start --connect' sudah berjalan. Tidak perlu dijalankan lagi."
+else
+    # Menjalankan perintah 'aios-cli start --connect'
+    echo "Menjalankan perintah 'aios-cli start --connect'..."
+    until aios-cli start --connect; do
+        echo "Terjadi kesalahan saat menjalankan 'aios-cli start --connect'. Mengulang..."
+        sleep 10
+    done
+fi
 
 # Keluar dari screen 'hyperspace' setelah menjalankan 'aios-cli start --connect'
 echo "Keluar dari sesi screen 'hyperspace'..."
