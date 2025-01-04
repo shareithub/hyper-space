@@ -84,13 +84,13 @@ echo "Keluar dari sesi screen 'prompt-hyperspace'..."
 screen -S prompt-hyperspace -X detach
 sleep 10
 
-# Masuk kembali ke sesi screen 'hyperspace'
-echo "Masuk kembali ke sesi screen 'hyperspace'..."
-screen -r hyperspace
-
 # Menghentikan proses 'aios-cli start' dan menjalankan perintah 'aios-cli kill'
 echo "Menghentikan proses 'aios-cli start' dengan 'aios-cli kill'..."
 aios-cli kill
+
+# Masuk kembali ke sesi screen 'hyperspace'
+echo "Masuk kembali ke sesi screen 'hyperspace'..."
+screen -r hyperspace
 
 # Menunggu 10 detik sebelum menjalankan 'aios-cli start --connect'
 echo "Menunggu 10 detik sebelum menjalankan perintah 'aios-cli start --connect'..."
