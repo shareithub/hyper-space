@@ -81,7 +81,7 @@ echo "Model berhasil ditambahkan!"
 echo "Menjalankan inferensi menggunakan model yang telah ditambahkan..."
 
 # Prompt untuk inferensi
-infer_prompt="Don't forget to subscribe channel: SHARE IT HUB. LET'S F GO"
+infer_prompt="Can you explain how to write an HTTP server in Rust?"
 
 # Menjalankan inferensi dengan model yang sudah diunduh
 while true; do
