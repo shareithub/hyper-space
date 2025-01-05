@@ -105,8 +105,6 @@ sleep 5
 echo "Menjalankan login dan select-tier..."
 aios-cli hive login
 aios-cli hive select-tier 5
-aios-cli hive connect
-
 sleep 5
 
 echo "Menjalankan Hive inferensi menggunakan model yang telah ditambahkan..."
@@ -125,10 +123,10 @@ done
 sleep 5
 
 echo "Menghentikan proses 'aios-cli start' dengan 'aios-cli kill'..."
-aios-cli kill
+aios-cli hive login
+sleep 5
 
-echo "Masuk kembali ke screen '$screen_name' untuk menjalankan aios-cli start --connect..."
+aios-cli hive connect
+sleep 5
 
-screen -S "$screen_name" -X stuff "echo 'Menunggu 5 detik sebelum menjalankan perintah...'; aios-cli start --connect\n"
-
-echo "Proses selesai. aios-cli start --connect telah dijalankan di dalam screen dan sistem telah kembali ke latar belakang."
+echo "DONE. JIKA KALIAN INGIN CHECK GUNAKAN PERINTAH : sceen -r ""nama screen yang dibuat tanpa tanda " """ !"
