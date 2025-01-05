@@ -6,6 +6,10 @@ echo "               SUBSCRIBE MY CHANNEL                     "
 
 sleep 5
 
+echo "Menghapus model yang ada sebelumnya..."
+rm -rf /root/.cache/hyperspace/models/*
+sleep 5
+
 #!/bin/bash
 
 read -p "Masukkan nama screen: " screen_name
@@ -36,31 +40,52 @@ fi
 
 sleep 2
 
-echo "Masukkan private key Anda (akhiri dengan CTRL+D):"
-cat > .pem
-
-echo "Menjalankan perintah import-keys dengan file.pem..."
-aios-cli hive import-keys ./.pem
-
-sleep 5
 echo "Menambahkan model dengan perintah aios-cli models add..."
-model="hf:TheBloke/phi-2-GGUF:phi-2.Q4_K_M.gguf"
 
-while true; do
-    if aios-cli models add "$model"; then
-        echo "Model berhasil ditambahkan dan proses download selesai!"
-        break
-    else
-        echo "Terjadi kesalahan saat menambahkan model. Mengulang..."
-        sleep 3  
-    fi
-done
+echo "Menambahkan model dengan perintah aios-cli models add..."
 
+# URL untuk mengunduh model
+url="https://huggingface.com/TheBloke/phi-2-GGUF/resolve/main/phi-2.Q4_K_M.gguf"
+
+# Path folder dan model yang akan disimpan
+model_folder="/root/.cache/hyperspace/models/hf__TheBloke___phi-2-GGUF__phi-2.Q4_K_M.gguf"
+model_path="$model_folder/phi-2.Q4_K_M.gguf"
+
+# Membuat folder jika belum ada
+if [[ ! -d "$model_folder" ]]; then
+    echo "Folder tidak ditemukan, membuat folder $model_folder..."
+    mkdir -p "$model_folder"
+else
+    echo "Folder sudah ada, melanjutkan..."
+fi
+
+# Mengunduh model jika file belum ada
+if [[ ! -f "$model_path" ]]; then
+    echo "Mengunduh model dari $url..."
+    while true; do
+        if wget -q "$url" -O "$model_path"; then
+            echo "Model berhasil diunduh dan disimpan di $model_path!"
+            break
+        else
+            echo "Terjadi kesalahan saat mengunduh model. Mengulang..."
+            sleep 3  
+        fi
+    done
+else
+    echo "Model sudah ada di $model_path, melewati proses pengunduhan."
+fi
+
+echo "Model berhasil ditambahkan!"
+
+# Menjalankan inferensi menggunakan model yang telah diunduh
 echo "Menjalankan inferensi menggunakan model yang telah ditambahkan..."
-infer_prompt="Hello, can you explain about the YouTube channel Share It Hub?"
 
+# Prompt untuk inferensi
+infer_prompt="Don't forget to subscribe channel: SHARE IT HUB. LET'S F GO"
+
+# Menjalankan inferensi dengan model yang sudah diunduh
 while true; do
-    if aios-cli infer --model "$model" --prompt "$infer_prompt"; then
+    if aios-cli infer --model hf:TheBloke/phi-2-GGUF:phi-2.Q4_K_M.gguf --prompt "$infer_prompt"; then
         echo "Inferensi berhasil."
         break
     else
@@ -68,6 +93,14 @@ while true; do
         sleep 3
     fi
 done
+
+echo "Masukkan private key Anda (akhiri dengan CTRL+D):"
+cat > .pem
+
+echo "Menjalankan perintah import-keys dengan file.pem..."
+aios-cli hive import-keys ./.pem
+
+sleep 5
 
 echo "Menjalankan login dan select-tier..."
 aios-cli hive login
@@ -77,7 +110,7 @@ aios-cli hive connect
 sleep 5
 
 echo "Menjalankan Hive inferensi menggunakan model yang telah ditambahkan..."
-infer_prompt="Hello, can you explain about the YouTube channel Share It Hub?"
+infer_prompt="Can you explain how to write an HTTP server in Rust?"
 
 while true; do
     if aios-cli hive infer --model "$model" --prompt "$infer_prompt"; then
@@ -88,6 +121,9 @@ while true; do
         sleep 3
     fi
 done
+
+sleep 5
+
 echo "Menghentikan proses 'aios-cli start' dengan 'aios-cli kill'..."
 aios-cli kill
 
