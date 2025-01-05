@@ -81,20 +81,24 @@ echo "Model berhasil ditambahkan!"
 
 # Menjalankan inferensi menggunakan model yang telah diunduh
 echo "Menjalankan inferensi menggunakan model yang telah ditambahkan..."
+read -p "Apakah Anda ingin menjalankan inferensi? (y/n): " user_choice
 
-# Prompt untuk inferensi
-infer_prompt="Can you explain how to write an HTTP server in Rust?"
+if [[ "$user_choice" == "y" || "$user_choice" == "Y" ]]; then
+    echo "Menjalankan inferensi menggunakan model yang telah ditambahkan..."
+    infer_prompt="Can you explain how to write an HTTP server in Rust?"
 
-# Menjalankan inferensi dengan model yang sudah diunduh
-while true; do
-    if aios-cli infer --model hf:TheBloke/phi-2-GGUF:phi-2.Q4_K_M.gguf --prompt "$infer_prompt"; then
-        echo "Inferensi berhasil."
-        break
-    else
-        echo "Terjadi kesalahan saat menjalankan inferensi. Mengulang..."
-        sleep 3
-    fi
-done
+    while true; do
+        if aios-cli infer --model hf:TheBloke/phi-2-GGUF:phi-2.Q4_K_M.gguf --prompt "$infer_prompt"; then
+            echo "Inferensi berhasil."
+            break
+        else
+            echo "Terjadi kesalahan saat menjalankan inferensi. Mengulang..."
+            sleep 3
+        fi
+    done
+else
+    echo "Langkah inferensi dilewati."
+fi
 
 echo "Menjalankan perintah import-keys dengan file.pem..."
 aios-cli hive import-keys ./.pem
@@ -107,17 +111,46 @@ aios-cli hive select-tier 5
 sleep 5
 
 echo "Menjalankan Hive inferensi menggunakan model yang telah ditambahkan..."
-infer_prompt="Can you explain how to write an HTTP server in Rust?"
+read -p "Apakah Anda ingin menjalankan inferensi model pertama? (y/n): " user_choice
 
-while true; do
-    if aios-cli hive infer --model "$model" --prompt "$infer_prompt"; then
-        echo "Hive Inferensi berhasil."
-        break
-    else
-        echo "Terjadi kesalahan saat menjalankan inferensi. Mengulang..."
-        sleep 3
-    fi
-done
+if [[ "$user_choice" == "y" || "$user_choice" == "Y" ]]; then
+    # Menjalankan inferensi menggunakan model yang telah ditambahkan
+    echo "Menjalankan inferensi menggunakan model yang telah ditambahkan..."
+    infer_prompt="Can you explain how to write an HTTP server in Rust?"
+
+    while true; do
+        if aios-cli infer --model hf:TheBloke/phi-2-GGUF:phi-2.Q4_K_M.gguf --prompt "$infer_prompt"; then
+            echo "Inferensi berhasil."
+            break
+        else
+            echo "Terjadi kesalahan saat menjalankan inferensi. Mengulang..."
+            sleep 3
+        fi
+    done
+else
+    echo "Langkah inferensi model pertama dilewati."
+fi
+
+# Menanyakan kepada pengguna apakah ingin menjalankan hive infer
+read -p "Apakah Anda ingin menjalankan inferensi Hive? (y/n): " hive_choice
+
+if [[ "$hive_choice" == "y" || "$hive_choice" == "Y" ]]; then
+    # Menjalankan inferensi Hive menggunakan model yang telah ditambahkan
+    echo "Menjalankan Hive inferensi menggunakan model yang telah ditambahkan..."
+    infer_prompt="Can you explain how to write an HTTP server in Rust?"
+
+    while true; do
+        if aios-cli hive infer --model "$model" --prompt "$infer_prompt"; then
+            echo "Hive Inferensi berhasil."
+            break
+        else
+            echo "Terjadi kesalahan saat menjalankan inferensi. Mengulang..."
+            sleep 3
+        fi
+    done
+else
+    echo "Langkah Hive inferensi dilewati."
+fi
 
 sleep 5
 
