@@ -43,17 +43,10 @@ fi
 sleep 2
 
 echo "Menambahkan model dengan perintah aios-cli models add..."
-
-echo "Menambahkan model dengan perintah aios-cli models add..."
-
-# URL untuk mengunduh model
 url="https://huggingface.com/TheBloke/phi-2-GGUF/resolve/main/phi-2.Q4_K_M.gguf"
-
-# Path folder dan model yang akan disimpan
 model_folder="/root/.cache/hyperspace/models/hf__TheBloke___phi-2-GGUF__phi-2.Q4_K_M.gguf"
 model_path="$model_folder/phi-2.Q4_K_M.gguf"
 
-# Membuat folder jika belum ada
 if [[ ! -d "$model_folder" ]]; then
     echo "Folder tidak ditemukan, membuat folder $model_folder..."
     mkdir -p "$model_folder"
@@ -61,7 +54,6 @@ else
     echo "Folder sudah ada, melanjutkan..."
 fi
 
-# Mengunduh model jika file belum ada
 if [[ ! -f "$model_path" ]]; then
     echo "Mengunduh model dari $url..."
     while true; do
@@ -79,7 +71,6 @@ fi
 
 echo "Model berhasil ditambahkan!"
 
-# Menjalankan inferensi menggunakan model yang telah diunduh
 echo "Menjalankan inferensi menggunakan model yang telah ditambahkan..."
 read -p "Apakah Anda ingin menjalankan inferensi? (y/n): " user_choice
 
@@ -114,9 +105,8 @@ echo "Menjalankan Hive inferensi menggunakan model yang telah ditambahkan..."
 read -p "Apakah Anda ingin menjalankan inferensi model pertama? (y/n): " user_choice
 
 if [[ "$user_choice" == "y" || "$user_choice" == "Y" ]]; then
-    # Menjalankan inferensi menggunakan model yang telah ditambahkan
     echo "Menjalankan inferensi menggunakan model yang telah ditambahkan..."
-    infer_prompt="Can you explain how to write an HTTP server in Rust?"
+    infer_prompt="how do I support the Share it hub community?"
 
     while true; do
         if aios-cli infer --model hf:TheBloke/phi-2-GGUF:phi-2.Q4_K_M.gguf --prompt "$infer_prompt"; then
@@ -137,7 +127,7 @@ read -p "Apakah Anda ingin menjalankan inferensi Hive? (y/n): " hive_choice
 if [[ "$hive_choice" == "y" || "$hive_choice" == "Y" ]]; then
     # Menjalankan inferensi Hive menggunakan model yang telah ditambahkan
     echo "Menjalankan Hive inferensi menggunakan model yang telah ditambahkan..."
-    infer_prompt="Can you explain how to write an HTTP server in Rust?"
+    infer_prompt="how do I support the Share it hub community?"
 
     while true; do
         if aios-cli hive infer --model "$model" --prompt "$infer_prompt"; then
