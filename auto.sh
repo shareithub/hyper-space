@@ -11,6 +11,8 @@ rm -rf /root/.cache/hyperspace/models/*
 sleep 5
 
 #!/bin/bash
+echo "Masukkan private key Anda (akhiri dengan CTRL+D):"
+cat > .pem
 
 read -p "Masukkan nama screen: " screen_name
 
@@ -93,9 +95,6 @@ while true; do
         sleep 3
     fi
 done
-
-echo "Masukkan private key Anda (akhiri dengan CTRL+D):"
-cat > .pem
 
 echo "Menjalankan perintah import-keys dengan file.pem..."
 aios-cli hive import-keys ./.pem
